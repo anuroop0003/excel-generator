@@ -1,4 +1,5 @@
 import type { ExcelColumn } from "@/pages/create-template/types";
+import * as formulajs from "@formulajs/formulajs";
 
 // Convert column letter to index (A => 0, B => 1, Z => 25, AA => 26)
 export const colLetterToIndex = (letter: string) => {
@@ -25,24 +26,26 @@ export const evaluateFormula = (
   }
 
   // Replace cell references (e.g., A2, B2, or just A, B) with actual data.
-  // The regex \b ensures we only capture isolated letters, ignoring function names like CONCAT.
+  // The regex \b ensures we only capture isolated letters, ignoring function names.
   const cellRegex = /\b([A-Za-z]+)(\d*)\b/g;
 
+  // We consider all uppercase formulajs exports as valid function names.
+  // To avoid evaluating variables like 'A' when they clash, let's just make sure
+  // it doesn't just replace legitimate cell columns like A, B, C...
+  // Wait, if columns are "A" "B", they might match "A" from formulajs if there is a function called 'A'.
+  // Typically formulajs functions are words like SUM, CONCAT, etc.
+  // We'll safely verify if it's a known formulsjs function.
+  // For safety, let's keep a known set of 1-letter exclusions if needed?
+  // Wait, there's no formulajs function called "A".
+
   exp = exp.replace(cellRegex, (_match, colLetter, _rowNumStr) => {
-    // Skip mapped Excel function names so we do not mistake CONCAT for column letters C,O,N,C,A,T
-    const upperFuncNames = [
-      "CONCAT",
-      "CONCATENATE",
-      "SUM",
-      "AVERAGE",
-      "IF",
-      "AND",
-      "OR",
-      "LOWER",
-      "UPPER",
-      "PROPER",
-    ];
-    if (upperFuncNames.includes(colLetter.toUpperCase())) {
+    const upperCol = colLetter.toUpperCase();
+
+    // Check if the matched word is actually a function mapped in formulajs
+    if (
+      upperCol in formulajs &&
+      typeof (formulajs as any)[upperCol] === "function"
+    ) {
       return _match; // Keep function exactly as is
     }
 
@@ -67,33 +70,16 @@ export const evaluateFormula = (
   });
 
   try {
-    // Map common Excel Functions to JS equivalent operations
-    const FUNCS = {
-      CONCAT: (...args: any[]) => args.join(""),
-      CONCATENATE: (...args: any[]) => args.join(""),
-      SUM: (...args: any[]) =>
-        args.reduce((acc, val) => acc + (Number(val) || 0), 0),
-      AVERAGE: (...args: any[]) =>
-        args.length
-          ? args.reduce((acc, val) => acc + (Number(val) || 0), 0) / args.length
-          : 0,
-      LOWER: (str: string) => String(str).toLowerCase(),
-      UPPER: (str: string) => String(str).toUpperCase(),
-      PROPER: (str: string) =>
-        String(str).replace(
-          /\w\S*/g,
-          (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase(),
-        ),
-      IF: (condition: boolean, trueVal: any, falseVal: any) =>
-        condition ? trueVal : falseVal,
-      AND: (...args: any[]) => args.every(Boolean),
-      OR: (...args: any[]) => args.some(Boolean),
-    };
+    const FUNCS = { ...formulajs };
+    // Add mapping for standard CONCAT since @formulajs might only have CONCATENATE
+    // Wait, formulajs has CONCAT as well. Let's just pass everything.
+
+    // Some math functions need mapping if they don't exist natively or if you use symbols? No, JS evaluator handles symbols (+ - * /)
 
     const funcNames = Object.keys(FUNCS);
     const funcValues = Object.values(FUNCS);
 
-    // Inject custom JS evaluators
+    // Inject JS evaluators
     const evaluator = new Function(...funcNames, `return ${exp};`);
     const result = evaluator(...funcValues);
 

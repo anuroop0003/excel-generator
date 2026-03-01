@@ -30,14 +30,14 @@ export function TopHeader({
         <Input
           value={templateName}
           onChange={(e) => setTemplateName(e.target.value)}
-          className="h-7 w-full max-w-[200px] bg-white border-slate-300 text-[13px] font-medium px-2 py-0 placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-green-600 focus-visible:ring-offset-0 transition-all rounded-sm shadow-sm"
+          className="h-7 w-full max-w-[200px] bg-white border-slate-300 text-[13px] font-medium px-2 py-0 placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-green-600 focus-visible:ring-offset-0 transition-all shadow-sm"
           placeholder="Template Name..."
         />
         <div className="h-4 w-[1px] bg-slate-300"></div>
         <Button
           size="sm"
           onClick={onPublish}
-          className="h-7 px-3 bg-[#107C41] hover:bg-[#0c6132] text-white font-medium rounded-sm text-xs shadow-sm transition-all"
+          className="h-7 bg-[#107C41] hover:bg-[#0c6132] text-white font-medium text-xs shadow-sm transition-all"
         >
           <Save className="mr-1.5 h-3.5 w-3.5" /> Publish
         </Button>

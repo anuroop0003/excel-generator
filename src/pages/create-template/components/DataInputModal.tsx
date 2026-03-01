@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { parseRawDataInput } from "@/lib/data-parser";
 import { Play, Upload } from "lucide-react";
 import { useState } from "react";
 
@@ -25,35 +26,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
   const handleRun = () => {
     try {
       setError(null);
-      // Attempt to parse as JSON first
-      const text = inputText.trim();
-      if (!text) {
-        onRunOutput([]);
-        setOpen(false);
-        return;
-      }
-
-      let parsedData: any[] = [];
-      if (text.startsWith("[") || text.startsWith("{")) {
-        const json = JSON.parse(text);
-        parsedData = Array.isArray(json) ? json : [json];
-      } else {
-        // Attempt dirty CSV parse
-        const lines = text.split("\n");
-        const headers = lines[0].split(",").map((h) => h.trim());
-        parsedData = lines
-          .slice(1)
-          .filter((l) => l.trim())
-          .map((line) => {
-            const values = line.split(",").map((v) => v.trim());
-            const obj: Record<string, string> = {};
-            headers.forEach((h, i) => {
-              obj[h] = values[i] || "";
-            });
-            return obj;
-          });
-      }
-
+      const parsedData = parseRawDataInput(inputText);
       onRunOutput(parsedData);
       setOpen(false);
       setInputText(""); // clear after successful run
@@ -70,7 +43,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
         <Button
           size="sm"
           variant="outline"
-          className="h-6 text-[11px] text-[#107C41] border-[#107C41] hover:bg-green-50 shadow-sm rounded-sm"
+          className="h-6 text-[11px] text-[#107C41] border-[#107C41] hover:bg-green-50 shadow-sm"
         >
           <Upload />
           Load Data

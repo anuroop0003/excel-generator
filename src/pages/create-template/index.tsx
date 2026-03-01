@@ -3,6 +3,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { arrayMove } from "@dnd-kit/sortable";
 import { useState } from "react";
 
 import { DataPreview } from "./components/DataPreview";
@@ -39,6 +40,14 @@ export function CreateTemplatePage() {
 
   const handleRemoveColumn = (id: string) => {
     setColumns(columns.filter((col) => col.id !== id));
+  };
+
+  const handleReorderColumn = (activeId: string, overId: string) => {
+    setColumns((items) => {
+      const oldIndex = items.findIndex((item) => item.id === activeId);
+      const newIndex = items.findIndex((item) => item.id === overId);
+      return arrayMove(items, oldIndex, newIndex);
+    });
   };
 
   const handleUpdateColumn = <K extends keyof ExcelColumn>(
@@ -112,6 +121,7 @@ export function CreateTemplatePage() {
               columns={columns}
               handleAddColumn={handleAddColumn}
               handleRemoveColumn={handleRemoveColumn}
+              handleReorderColumn={handleReorderColumn}
               handleUpdateColumn={handleUpdateColumn}
             />
           </ResizablePanel>
