@@ -70,9 +70,10 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
         <Button
           size="sm"
           variant="outline"
-          className="h-6 text-[11px] text-[#107C41] border-[#107C41] hover:bg-green-50 px-2 shadow-sm rounded-sm"
+          className="h-6 text-[11px] text-[#107C41] border-[#107C41] hover:bg-green-50 shadow-sm rounded-sm"
         >
-          <Upload className="mr-1 h-3 w-3" /> Load Data
+          <Upload />
+          Load Data
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">

@@ -131,29 +131,6 @@ export function DataPreview({
                               {cellValue === "" ? "empty" : String(cellValue)}
                             </span>
                           )
-                        ) : // MOCK PREVIEW
-                        rowIndex < 3 ? (
-                          col.isFormula ? (
-                            <span className="font-mono text-[11px] text-green-700">
-                              ={col.formula?.substring(1) || "FORMULA"}
-                            </span>
-                          ) : col.type === "Boolean" ? (
-                            <span className="text-slate-600">TRUE</span>
-                          ) : col.type === "Enum" ? (
-                            <span className="text-slate-600">
-                              {col.options?.split(",")[0]?.trim() || "Option"}
-                            </span>
-                          ) : col.type === "Number" ? (
-                            <span className="text-slate-600 font-mono text-right w-full block">
-                              123.45
-                            </span>
-                          ) : col.type === "Date" ? (
-                            <span className="text-slate-600">2026-03-01</span>
-                          ) : (
-                            <span className="text-slate-400 italic text-[11px] px-1">
-                              {rowIndex === 0 ? col.name || "text" : "sample"}
-                            </span>
-                          )
                         ) : null}
                       </TableCell>
                     );
