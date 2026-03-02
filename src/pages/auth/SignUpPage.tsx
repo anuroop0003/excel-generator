@@ -40,7 +40,6 @@ export default function SignUpPage() {
   });
 
   const onSubmit = (values: SignUpFormValues) => {
-    console.log("Sign-up values:", values);
     toast.success("Account created successfully!", {
       description: `Welcome, ${values.name}`,
     });

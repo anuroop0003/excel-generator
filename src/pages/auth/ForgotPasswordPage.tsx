@@ -33,7 +33,6 @@ export default function ForgotPasswordPage() {
   });
 
   const onSubmit = (values: ForgotPasswordFormValues) => {
-    console.log("Forgot-password values:", values);
     toast.success("Reset link sent!", {
       description: `Check your inbox (${values.email}) for instructions.`,
     });

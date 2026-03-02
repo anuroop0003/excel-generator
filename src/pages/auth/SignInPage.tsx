@@ -37,7 +37,6 @@ export default function SignInPage() {
   });
 
   const onSubmit = (values: SignInFormValues) => {
-    console.log("Sign-in values:", values);
     toast.success("Signed in successfully!", {
       description: `Welcome back, ${values.email}`,
     });
