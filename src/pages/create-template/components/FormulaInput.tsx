@@ -43,7 +43,7 @@ export function FormulaInput({
   return (
     <Popover open={showSuggestions}>
       <PopoverAnchor asChild>
-        <div className="relative flex items-center flex-1 h-full w-full">
+        <div className="mx-0.5 relative flex items-center flex-1 h-full w-full">
           <span className="absolute left-2 text-[11px] font-mono font-bold text-green-700 pointer-events-none">
             ƒx
           </span>
@@ -53,7 +53,7 @@ export function FormulaInput({
             onFocus={() => setFocused(true)}
             onBlur={() => setTimeout(() => setFocused(false), 200)}
             placeholder="=SUM(A, B)"
-            className="h-full w-full font-mono text-[11px] pl-6 border-0 bg-transparent focus:bg-white focus:ring-inset focus:ring-2 focus:ring-[#107C41] shadow-none placeholder:text-slate-300 text-green-900"
+            className="h-full w-full font-mono text-[11px] pl-6 border-0 bg-transparent focus:bg-white focus-visible:ring-0 shadow-none placeholder:text-slate-300 text-green-900 rounded-none"
           />
         </div>
       </PopoverAnchor>

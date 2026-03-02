@@ -29,7 +29,7 @@ export function DataPreview({
     <>
       <div className="flex h-9 shrink-0 items-center justify-between border-b border-slate-300 bg-slate-100 px-3">
         <div className="flex items-center gap-1.5">
-          <Database className="h-3.5 w-3.5 text-[#107C41]" />
+          <Database className="size-3.5 text-[#107C41]" />
           <h2 className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
             Data Preview
           </h2>
@@ -69,7 +69,7 @@ export function DataPreview({
                       </span>
                       <TypeIcon
                         type={col.type}
-                        className="h-3 w-3 text-[#107C41] opacity-70 ml-2 shrink-0"
+                        className="size-3 text-[#107C41] opacity-70 ml-2 shrink-0"
                       />
                     </div>
                   </TableHead>

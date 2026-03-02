@@ -17,7 +17,7 @@ export function TopHeader({
     <header className="flex h-12 shrink-0 items-center justify-between border-b border-slate-300 bg-slate-50 px-4 z-10 w-full">
       <div className="flex items-center gap-3">
         <div className="flex h-7 w-7 items-center justify-center rounded bg-[#107C41] text-white shadow-sm border border-[#0d6635]">
-          <FileSpreadsheet className="h-4 w-4" />
+          <FileSpreadsheet className="size-4" />
         </div>
         <div className="flex items-center gap-1.5">
           <span className="text-sm font-semibold tracking-tight text-slate-800">
@@ -39,7 +39,7 @@ export function TopHeader({
           onClick={onPublish}
           className="h-7 bg-[#107C41] hover:bg-[#0c6132] text-white font-medium text-xs shadow-sm transition-all"
         >
-          <Save className="mr-1.5 h-3.5 w-3.5" /> Publish
+          <Save className="mr-1.5 size-3.5" /> Publish
         </Button>
       </div>
     </header>

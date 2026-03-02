@@ -62,7 +62,7 @@ export function SchemaEditor({
     <>
       <div className="flex h-9 shrink-0 items-center justify-between border-b border-slate-300 bg-slate-200 px-3">
         <div className="flex items-center gap-1.5">
-          <LayoutTemplate className="h-3.5 w-3.5 text-[#107C41]" />
+          <LayoutTemplate className="size-3.5 text-[#107C41]" />
           <h2 className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
             Schema Editor
           </h2>
@@ -92,14 +92,23 @@ export function SchemaEditor({
               <TableHeader className="sticky top-0 z-10 bg-slate-100 shadow-[0_1px_0_0_#cbd5e1]">
                 <TableRow className="border-none hover:bg-slate-100">
                   <TableHead className="w-8 h-7 p-0 bg-slate-200 border-r border-slate-300"></TableHead>
-                  <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[20%] py-0 align-middle">
+                  <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[15%] py-0 align-middle">
                     Field Name
                   </TableHead>
-                  <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[15%] py-0 align-middle">
+                  <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[110px] py-0 align-middle">
                     Data Type
                   </TableHead>
+                  <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[12%] py-0 align-middle">
+                    Default Value
+                  </TableHead>
+                  <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[12%] py-0 align-middle">
+                    Format
+                  </TableHead>
+                  <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[12%] py-0 align-middle">
+                    Validation
+                  </TableHead>
                   <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 py-0 align-middle">
-                    Configuration
+                    Function
                   </TableHead>
                   <TableHead className="w-8 h-7 p-0 text-center"></TableHead>
                 </TableRow>

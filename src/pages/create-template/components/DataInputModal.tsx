@@ -52,7 +52,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-[#107C41] flex items-center gap-2">
-            <Upload className="h-5 w-5" /> Load Test Data
+            <Upload className="size-5" /> Load Test Data
           </DialogTitle>
           <DialogDescription>
             Paste your raw data in JSON sequence or basic CSV format to test the
@@ -80,7 +80,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
             onClick={handleRun}
             className="bg-[#107C41] hover:bg-[#0c6132] text-white"
           >
-            <Play className="mr-1.5 h-4 w-4" /> Run Output
+            <Play className="mr-1.5 size-4" /> Run Output
           </Button>
         </DialogFooter>
       </DialogContent>
