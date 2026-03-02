@@ -27,7 +27,7 @@ export function ActionsCell({ id, name, onRemove }: ActionsCellProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="transition-colors text-destructive/30 hover:text-destructive rounded-none"
+            className="transition-colors text-destructive/30 hover:text-destructive rounded-none cursor-pointer"
           >
             <Trash2 className="size-3.5" />
           </Button>

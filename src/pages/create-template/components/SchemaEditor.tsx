@@ -71,9 +71,10 @@ export function SchemaEditor({
           size="sm"
           onClick={handleAddColumn}
           variant="ghost"
-          className="h-6 text-[11px] text-slate-700 hover:bg-slate-300 py-0 border border-transparent hover:border-slate-400"
+          className="h-6 text-[11px] text-slate-700 hover:bg-slate-300 py-0 border border-transparent hover:border-slate-400 cursor-pointer"
         >
-          <Plus /> Add Column
+          <Plus />
+          Add Column
         </Button>
       </div>
 

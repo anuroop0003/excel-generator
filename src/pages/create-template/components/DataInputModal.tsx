@@ -86,7 +86,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
         <Button
           size="sm"
           variant="outline"
-          className="h-6 text-[11px] text-[#107C41] border-[#107C41] hover:bg-green-50 shadow-sm"
+          className="h-6 text-[11px] text-[#107C41] border-[#107C41] hover:bg-green-50 shadow-sm cursor-pointer"
         >
           <Upload />
           Load Data
@@ -120,7 +120,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
-                className="h-7 text-[11px] text-[#107C41] hover:bg-green-50 px-2 flex items-center gap-1.5"
+                className="h-7 text-[11px] text-[#107C41] hover:bg-green-50 px-2 flex items-center gap-1.5 cursor-pointer"
               >
                 <FileSpreadsheet className="size-3.5" />
                 {uploadedFileName ? "Change File" : "Upload Excel"}
@@ -147,15 +147,19 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost" className="text-slate-500" onClick={reset}>
+            <Button
+              variant="ghost"
+              className="text-slate-500 cursor-pointer"
+              onClick={reset}
+            >
               Cancel
             </Button>
           </DialogClose>
           <Button
             onClick={handleRun}
-            className="bg-[#107C41] hover:bg-[#0c6132] text-white"
+            className="bg-[#107C41] hover:bg-[#0c6132] text-white cursor-pointer"
           >
-            <Play className="mr-1.5 size-4" /> Run Output
+            <Play className="size-4" /> Run Output
           </Button>
         </DialogFooter>
       </DialogContent>

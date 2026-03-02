@@ -1,5 +1,6 @@
-import { CreateTemplatePage } from "./pages/create-template";
+import { RouterProvider } from "react-router-dom";
+import { routes } from "./routes";
 
 export default function App() {
-  return <CreateTemplatePage />;
+  return <RouterProvider router={routes} />;
 }

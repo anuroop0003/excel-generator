@@ -3,8 +3,10 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { getTemplateById, saveTemplate } from "@/lib/templates-store";
 import { arrayMove } from "@dnd-kit/sortable";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { DataPreview } from "./components/DataPreview";
 import { SchemaEditor } from "./components/SchemaEditor";
@@ -25,9 +27,34 @@ const DEFAULT_COLUMNS: ExcelColumn[] = [
 ];
 
 export function CreateTemplatePage() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const templateIdRef = useRef(id || crypto.randomUUID());
+
   const [columns, setColumns] = useState<ExcelColumn[]>(DEFAULT_COLUMNS);
   const [templateName, setTemplateName] = useState("Sales Roster Template");
   const [sampleData, setSampleData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (id) {
+      const existing = getTemplateById(id);
+      if (existing) {
+        setColumns(existing.columns);
+        setTemplateName(existing.name);
+        templateIdRef.current = existing.id;
+      }
+    }
+  }, [id]);
+
+  const handleSaveTemplate = () => {
+    saveTemplate({
+      id: templateIdRef.current,
+      name: templateName,
+      columns,
+      lastModified: Date.now(),
+    });
+    navigate("/");
+  };
 
   const handleAddColumn = () => {
     const newCol: ExcelColumn = {
@@ -67,12 +94,6 @@ export function CreateTemplatePage() {
             }
           }
 
-          // Cleanup when toggling formula
-          if (field === "isFormula" && !value) {
-            // We keep the formula string around in case they toggle it back immediately,
-            // but you could add logic here to clear it if desired: `updated.formula = ""`
-          }
-
           return updated;
         }
         return col;
@@ -85,6 +106,7 @@ export function CreateTemplatePage() {
       <TopHeader
         templateName={templateName}
         setTemplateName={setTemplateName}
+        onPublish={handleSaveTemplate}
       />
 
       {/* MAIN WORKSPACE - EDGE TO EDGE */}
