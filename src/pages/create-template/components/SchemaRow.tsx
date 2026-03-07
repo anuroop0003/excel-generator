@@ -19,10 +19,12 @@ interface SchemaRowProps {
     field: K,
     value: ExcelColumn[K],
   ) => void;
+  index: number;
 }
 
 export function SchemaRow({
   col,
+  index,
   handleRemoveColumn,
   handleUpdateColumn,
 }: SchemaRowProps) {
@@ -54,6 +56,7 @@ export function SchemaRow({
       <FieldNameCell
         id={col.id}
         name={col.name}
+        index={index}
         onUpdate={handleUpdateColumn}
       />
       <DataTypeCell id={col.id} type={col.type} onUpdate={handleUpdateColumn} />
@@ -66,13 +69,6 @@ export function SchemaRow({
         />
       ) : (
         <>
-          <ConfigFieldCell
-            id={col.id}
-            field="defaultValue"
-            value={col.defaultValue}
-            placeholder="Default Value"
-            onUpdate={handleUpdateColumn}
-          />
           <ConfigFieldCell
             id={col.id}
             field="formatting"

@@ -5,22 +5,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getColumnLetter } from "@/lib/utils";
 import { Database, LayoutTemplate } from "lucide-react";
 import type { ExcelColumn } from "../types";
 import { DataInputModal } from "./DataInputModal";
 import { DataPreviewRow } from "./DataPreviewRow";
+import { ExportModal } from "./ExportModal";
 import { TypeIcon } from "./TypeIcon";
 
 interface DataPreviewProps {
   columns: ExcelColumn[];
   sampleData?: any[];
   onLoadData?: (data: any[]) => void;
+  onUpdateCell: (rowIndex: number, field: string, value: any) => void;
+  templateName: string;
 }
 
 export function DataPreview({
   columns,
   sampleData = [],
   onLoadData,
+  onUpdateCell,
+  templateName,
 }: DataPreviewProps) {
   const hasData = sampleData && sampleData.length > 0;
   const rowsToRender = hasData ? sampleData : Array.from({ length: 40 });
@@ -40,8 +46,14 @@ export function DataPreview({
           </span>
           {onLoadData && (
             <>
-              <div className="w-[1px] h-3 bg-slate-300"></div>
+              <div className="w-px h-3 bg-slate-300"></div>
               <DataInputModal onRunOutput={onLoadData} />
+              <div className="w-px h-3 bg-slate-300"></div>
+              <ExportModal
+                data={sampleData}
+                columns={columns}
+                templateName={templateName}
+              />
             </>
           )}
         </div>
@@ -56,8 +68,19 @@ export function DataPreview({
         ) : (
           <Table className="whitespace-nowrap w-full border-collapse">
             <TableHeader className="sticky top-0 z-10 bg-slate-100 shadow-[0_1px_0_0_#cbd5e1]">
+              <TableRow className="border-none bg-slate-200/50">
+                <TableHead className="w-10 min-w-[40px] max-w-[40px] border-r border-slate-300 bg-slate-200/50 h-5 p-0"></TableHead>
+                {columns.map((_, idx) => (
+                  <TableHead
+                    key={`letter-${idx}`}
+                    className="h-5 border-r border-slate-300 px-2 bg-slate-200/50 text-center text-[10px] font-bold text-slate-500 py-0"
+                  >
+                    {getColumnLetter(idx)}
+                  </TableHead>
+                ))}
+              </TableRow>
               <TableRow className="hover:bg-slate-100 border-none">
-                <TableHead className="w-10 min-w-[40px] max-w-[40px] border-r border-slate-300 text-center px-0 text-slate-500 font-medium text-[11px] h-7 p-0 bg-slate-200 flex-shrink-0 flex-grow-0"></TableHead>
+                <TableHead className="w-10 min-w-[40px] max-w-[40px] border-r border-slate-300 text-center px-0 text-slate-500 font-medium text-[11px] h-7 p-0 bg-slate-200 shrink-0 grow-0"></TableHead>
                 {columns.map((col, idx) => (
                   <TableHead
                     key={col.id}
@@ -84,6 +107,7 @@ export function DataPreview({
                   rowIndex={rowIndex}
                   columns={columns}
                   hasData={hasData}
+                  onUpdate={onUpdateCell}
                 />
               ))}
             </TableBody>

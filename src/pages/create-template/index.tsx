@@ -22,7 +22,7 @@ const DEFAULT_COLUMNS: ExcelColumn[] = [
     name: "Full Name",
     type: "String",
     isFormula: true,
-    formula: '=CONCAT(A2, " ", B2)',
+    formula: '=CONCAT(A, " ", B)',
   },
 ];
 
@@ -31,15 +31,21 @@ export function CreateTemplatePage() {
   const navigate = useNavigate();
   const templateIdRef = useRef(id || crypto.randomUUID());
 
-  const [columns, setColumns] = useState<ExcelColumn[]>(DEFAULT_COLUMNS);
+  const [editingColumns, setEditingColumns] =
+    useState<ExcelColumn[]>(DEFAULT_COLUMNS);
+  const [previewColumns, setPreviewColumns] =
+    useState<ExcelColumn[]>(DEFAULT_COLUMNS);
   const [templateName, setTemplateName] = useState("Sales Roster Template");
-  const [sampleData, setSampleData] = useState<any[]>([]);
+  const [sampleData, setSampleData] = useState<any[]>(
+    Array.from({ length: 40 }, () => ({})),
+  );
 
   useEffect(() => {
     if (id) {
       const existing = getTemplateById(id);
       if (existing) {
-        setColumns(existing.columns);
+        setEditingColumns(existing.columns);
+        setPreviewColumns(existing.columns);
         setTemplateName(existing.name);
         templateIdRef.current = existing.id;
       }
@@ -50,27 +56,42 @@ export function CreateTemplatePage() {
     saveTemplate({
       id: templateIdRef.current,
       name: templateName,
-      columns,
+      columns: editingColumns,
       lastModified: Date.now(),
     });
     navigate("/");
   };
 
+  const handleUpdatePreview = () => {
+    setPreviewColumns([...editingColumns]);
+  };
+
+  const handleUpdateCell = (rowIndex: number, field: string, value: any) => {
+    setSampleData((prev) => {
+      const next = [...prev];
+      if (!next[rowIndex]) {
+        next[rowIndex] = {};
+      }
+      next[rowIndex] = { ...next[rowIndex], [field]: value };
+      return next;
+    });
+  };
+
   const handleAddColumn = () => {
     const newCol: ExcelColumn = {
       id: crypto.randomUUID(),
-      name: `Field_${columns.length + 1}`,
+      name: `Field_${editingColumns.length + 1}`,
       type: "String",
     };
-    setColumns([...columns, newCol]);
+    setEditingColumns([...editingColumns, newCol]);
   };
 
   const handleRemoveColumn = (id: string) => {
-    setColumns(columns.filter((col) => col.id !== id));
+    setEditingColumns(editingColumns.filter((col) => col.id !== id));
   };
 
   const handleReorderColumn = (activeId: string, overId: string) => {
-    setColumns((items) => {
+    setEditingColumns((items) => {
       const oldIndex = items.findIndex((item) => item.id === activeId);
       const newIndex = items.findIndex((item) => item.id === overId);
       return arrayMove(items, oldIndex, newIndex);
@@ -82,15 +103,18 @@ export function CreateTemplatePage() {
     field: K,
     value: ExcelColumn[K],
   ) => {
-    setColumns(
-      columns.map((col) => {
+    setEditingColumns(
+      editingColumns.map((col) => {
         if (col.id === id) {
           const updated = { ...col, [field]: value };
 
           // Cleanup logic when changing types
           if (field === "type") {
             if (value === "Enum" && !updated.options) {
-              updated.options = "Option 1, Option 2";
+              updated.options = [
+                { value: "Option 1", label: "Option 1" },
+                { value: "Option 2", label: "Option 2" },
+              ];
             }
           }
 
@@ -119,9 +143,11 @@ export function CreateTemplatePage() {
             className="flex flex-col bg-white"
           >
             <DataPreview
-              columns={columns}
+              columns={previewColumns}
               sampleData={sampleData}
               onLoadData={(data) => setSampleData(data)}
+              onUpdateCell={handleUpdateCell}
+              templateName={templateName}
             />
           </ResizablePanel>
 
@@ -140,11 +166,12 @@ export function CreateTemplatePage() {
             className="flex flex-col bg-slate-50"
           >
             <SchemaEditor
-              columns={columns}
+              columns={editingColumns}
               handleAddColumn={handleAddColumn}
               handleRemoveColumn={handleRemoveColumn}
               handleReorderColumn={handleReorderColumn}
               handleUpdateColumn={handleUpdateColumn}
+              onUpdatePreview={handleUpdatePreview}
             />
           </ResizablePanel>
         </ResizablePanelGroup>

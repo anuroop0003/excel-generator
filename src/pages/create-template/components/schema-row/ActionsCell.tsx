@@ -21,7 +21,7 @@ interface ActionsCellProps {
 
 export function ActionsCell({ id, name, onRemove }: ActionsCellProps) {
   return (
-    <TableCell className="p-0 align-middle text-center w-8">
+    <TableCell className="py-0 align-middle text-center w-8">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
@@ -40,10 +40,13 @@ export function ActionsCell({ id, name, onRemove }: ActionsCellProps) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="cursor-pointer">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
               onClick={() => onRemove(id)}
+              className="cursor-pointer"
             >
               Delete
             </AlertDialogAction>

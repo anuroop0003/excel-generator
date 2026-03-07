@@ -43,7 +43,7 @@ export function FormulaInput({
   return (
     <Popover open={showSuggestions}>
       <PopoverAnchor asChild>
-        <div className="mx-0.5 relative flex items-center flex-1 h-full w-full">
+        <div className="relative flex items-center flex-1 h-full w-full">
           <span className="absolute left-2 text-[11px] font-mono font-bold text-green-700 pointer-events-none">
             ƒx
           </span>
@@ -59,7 +59,7 @@ export function FormulaInput({
       </PopoverAnchor>
       <PopoverContent
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="w-[250px] p-1 border-slate-200 shadow-xl z-[100] max-h-[180px] overflow-auto"
+        className="w-[250px] p-1 border-slate-200 shadow-xl z-100 max-h-[180px] overflow-auto"
         align="start"
       >
         {suggestions.map((s) => (

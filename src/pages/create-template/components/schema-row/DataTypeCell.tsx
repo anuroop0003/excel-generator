@@ -21,7 +21,7 @@ interface DataTypeCellProps {
 
 export function DataTypeCell({ id, type, onUpdate }: DataTypeCellProps) {
   return (
-    <TableCell className="relative p-0 align-middle border-r border-slate-200 bg-white w-[110px] focus-within:z-20 focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#107C41]">
+    <TableCell className="relative py-0 align-middle border-r border-slate-200 bg-white w-[110px] focus-within:z-20 focus-within:outline-2 focus-within:outline-[#107C41] focus-within:-outline-offset-2">
       <Select
         value={type}
         onValueChange={(val) => onUpdate(id, "type", val as ColumnType)}

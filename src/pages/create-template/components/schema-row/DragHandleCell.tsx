@@ -3,7 +3,7 @@ import { GripVertical } from "lucide-react";
 
 export function DragHandleCell({ attributes, listeners }: any) {
   return (
-    <TableCell className="w-8 p-0 align-middle bg-slate-50 border-r border-slate-200">
+    <TableCell className="w-8 py-0 align-middle bg-slate-50 border-r border-slate-200">
       <div
         {...attributes}
         {...listeners}

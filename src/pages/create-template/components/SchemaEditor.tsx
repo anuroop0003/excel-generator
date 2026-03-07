@@ -20,7 +20,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { LayoutTemplate, Plus } from "lucide-react";
+import { LayoutTemplate, Plus, RefreshCcw } from "lucide-react";
 import type { ExcelColumn } from "../types";
 import { SchemaRow } from "./SchemaRow";
 
@@ -34,6 +34,7 @@ interface SchemaEditorProps {
     field: K,
     value: ExcelColumn[K],
   ) => void;
+  onUpdatePreview: () => void;
 }
 
 export function SchemaEditor({
@@ -42,6 +43,7 @@ export function SchemaEditor({
   handleRemoveColumn,
   handleReorderColumn,
   handleUpdateColumn,
+  onUpdatePreview,
 }: SchemaEditorProps) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -67,15 +69,26 @@ export function SchemaEditor({
             Schema Editor
           </h2>
         </div>
-        <Button
-          size="sm"
-          onClick={handleAddColumn}
-          variant="ghost"
-          className="h-6 text-[11px] text-slate-700 hover:bg-slate-300 py-0 border border-transparent hover:border-slate-400 cursor-pointer"
-        >
-          <Plus />
-          Add Column
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            onClick={onUpdatePreview}
+            variant="ghost"
+            className="h-6 text-[11px] text-[#107C41] hover:bg-green-50 font-semibold py-0 border border-green-200 hover:border-green-300 cursor-pointer gap-1.5"
+          >
+            <RefreshCcw className="size-3" />
+            Update Preview
+          </Button>
+          <Button
+            size="sm"
+            onClick={handleAddColumn}
+            variant="ghost"
+            className="h-6 text-[11px] text-slate-700 hover:bg-slate-300 py-0 border border-transparent hover:border-slate-400 cursor-pointer gap-1"
+          >
+            <Plus className="size-3" />
+            Add Column
+          </Button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-auto bg-white">
@@ -100,9 +113,6 @@ export function SchemaEditor({
                     Data Type
                   </TableHead>
                   <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[12%] py-0 align-middle">
-                    Default Value
-                  </TableHead>
-                  <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[12%] py-0 align-middle">
                     Format
                   </TableHead>
                   <TableHead className="h-7 px-2 text-[11px] font-semibold text-slate-600 border-r border-slate-300 w-[12%] py-0 align-middle">
@@ -119,10 +129,11 @@ export function SchemaEditor({
                   items={columns.map((c) => c.id)}
                   strategy={verticalListSortingStrategy}
                 >
-                  {columns.map((col) => (
+                  {columns.map((col, index) => (
                     <SchemaRow
                       key={col.id}
                       col={col}
+                      index={index}
                       handleRemoveColumn={handleRemoveColumn}
                       handleUpdateColumn={handleUpdateColumn}
                     />

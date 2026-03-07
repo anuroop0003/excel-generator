@@ -4,7 +4,7 @@ import type { ExcelColumn } from "../../types";
 
 interface ConfigFieldCellProps {
   id: string;
-  field: "defaultValue" | "formatting" | "validation";
+  field: "formatting" | "validation";
   value: string | undefined;
   placeholder: string;
   onUpdate: <K extends keyof ExcelColumn>(
@@ -22,7 +22,7 @@ export function ConfigFieldCell({
   onUpdate,
 }: ConfigFieldCellProps) {
   return (
-    <TableCell className="relative p-0 align-middle border-r border-slate-200 bg-white focus-within:z-20 focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#107C41]">
+    <TableCell className="relative py-0 align-middle border-r border-slate-200 bg-white focus-within:z-20 focus-within:outline-2 focus-within:outline-[#107C41] focus-within:-outline-offset-2">
       <Input
         value={value || ""}
         onChange={(e) => onUpdate(id, field, e.target.value)}
