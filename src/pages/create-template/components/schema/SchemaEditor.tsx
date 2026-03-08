@@ -75,7 +75,7 @@ export function SchemaEditor({ onUpdatePreview }: SchemaEditorProps) {
             size="sm"
             onClick={onUpdatePreview}
             variant="ghost"
-            className="h-6 text-[11px] text-[#107C41] hover:bg-green-50 font-semibold py-0 border border-green-200 hover:border-green-300 cursor-pointer gap-1.5"
+            className="h-6 text-[11px] text-green-700 hover:bg-green-50 font-semibold py-0 border border-green-200 hover:border-green-300 cursor-pointer"
           >
             <RefreshCcw className="size-3" />
             Update Preview
@@ -84,7 +84,7 @@ export function SchemaEditor({ onUpdatePreview }: SchemaEditorProps) {
             size="sm"
             onClick={handleAddColumn}
             variant="ghost"
-            className="h-6 text-[11px] text-slate-700 hover:bg-slate-300 py-0 border border-transparent hover:border-slate-400 cursor-pointer gap-1"
+            className="h-6 text-[11px] text-blue-700 hover:bg-blue-50 font-semibold py-0 border border-blue-200 hover:border-blue-300 cursor-pointer"
           >
             <Plus className="size-3" />
             Add Column

@@ -92,7 +92,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
           Load Data
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent showCloseButton={false} className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-[#107C41] flex items-center gap-2">
             <Upload className="size-5" /> Load Test Data
@@ -120,7 +120,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
-                className="h-7 text-[11px] text-[#107C41] hover:bg-green-50 px-2 flex items-center gap-1.5 cursor-pointer"
+                className="h-7 text-[11px] text-[#107C41] hover:bg-green-50 px-2 flex items-center cursor-pointer"
               >
                 <FileSpreadsheet className="size-3.5" />
                 {uploadedFileName ? "Change File" : "Upload Excel"}

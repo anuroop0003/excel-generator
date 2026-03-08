@@ -30,7 +30,7 @@ const DEFAULT_COLUMNS: ExcelColumn[] = [
   },
 ];
 
-export function CreateTemplatePage() {
+export default function CreateTemplatePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 

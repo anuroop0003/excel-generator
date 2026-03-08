@@ -47,7 +47,7 @@ export function ExportModal({ data, columns, templateName }: ExportModalProps) {
         <Button
           size="sm"
           variant="outline"
-          className="h-7 text-[11px] font-semibold border-slate-300 text-slate-700 hover:bg-slate-100 gap-1.5 cursor-pointer"
+          className="h-7 text-[11px] font-semibold border-slate-300 text-slate-700 hover:bg-slate-100 cursor-pointer"
         >
           <Download className="size-3.5" />
           Export Data
@@ -63,7 +63,7 @@ export function ExportModal({ data, columns, templateName }: ExportModalProps) {
         <div className="grid grid-cols-2 gap-4 py-4">
           <Button
             variant="outline"
-            className="flex flex-col items-center justify-center h-24 gap-2 border-2 hover:border-[#107C41] hover:bg-green-50 transition-all group cursor-pointer"
+            className="flex flex-col items-center justify-center h-24 border-2 hover:border-[#107C41] hover:bg-green-50 transition-all group cursor-pointer"
             onClick={exportToExcel}
           >
             <FileDown className="size-8 text-[#107C41] group-hover:scale-110 transition-transform" />
@@ -71,7 +71,7 @@ export function ExportModal({ data, columns, templateName }: ExportModalProps) {
           </Button>
           <Button
             variant="outline"
-            className="flex flex-col items-center justify-center h-24 gap-2 border-2 hover:border-yellow-600 hover:bg-yellow-50 transition-all group cursor-pointer"
+            className="flex flex-col items-center justify-center h-24 border-2 hover:border-yellow-600 hover:bg-yellow-50 transition-all group cursor-pointer"
             onClick={exportToJson}
           >
             <FileJson className="size-8 text-yellow-600 group-hover:scale-110 transition-transform" />
