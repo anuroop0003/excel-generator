@@ -1,6 +1,5 @@
-import { ScrollArea as ScrollAreaPrimitive } from "radix-ui";
-
 import { cn } from "@/lib/utils";
+import { ScrollArea as ScrollAreaPrimitive } from "radix-ui";
 
 function ScrollArea({
   className,

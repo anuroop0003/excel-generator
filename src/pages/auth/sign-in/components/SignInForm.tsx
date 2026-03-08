@@ -7,7 +7,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import {
   signInSchema,
   type SignInFormValues,
@@ -21,7 +25,7 @@ import { toast } from "sonner";
 
 export function SignInForm() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
@@ -50,14 +54,16 @@ export function SignInForm() {
                 Email
               </FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
-                  <Input
+                <InputGroup className="border-slate-200 focus-within:ring-[#107C41] bg-white h-10 overflow-hidden">
+                  <InputGroupAddon className="pl-3 pr-0">
+                    <Mail className="size-4 text-slate-400" />
+                  </InputGroupAddon>
+                  <InputGroupInput
                     placeholder="name@example.com"
-                    className="pl-9 h-10 border-slate-200 focus-visible:ring-[#107C41] bg-white"
+                    className="pl-2 border-0"
                     {...field}
                   />
-                </div>
+                </InputGroup>
               </FormControl>
               <FormMessage className="text-xs" />
             </FormItem>
@@ -80,28 +86,32 @@ export function SignInForm() {
                 </Link>
               </div>
               <FormControl>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
-                  <Input
+                <InputGroup className="border-slate-200 focus-within:ring-[#107C41] bg-white h-10 overflow-hidden">
+                  <InputGroupAddon className="pl-3 pr-0">
+                    <Lock className="size-4 text-slate-400" />
+                  </InputGroupAddon>
+                  <InputGroupInput
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-9 pr-10 h-10 border-slate-200 focus-visible:ring-[#107C41] bg-white"
+                    className="pl-2 pr-1 border-0"
                     {...field}
                   />
-                  <Button
-                    size="icon-sm"
-                    variant="ghost"
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="size-4" />
-                    ) : (
-                      <Eye className="size-4" />
-                    )}
-                  </Button>
-                </div>
+                  <InputGroupAddon className="px-1">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="h-8 w-8 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer p-0"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="size-4" />
+                      ) : (
+                        <Eye className="size-4" />
+                      )}
+                    </Button>
+                  </InputGroupAddon>
+                </InputGroup>
               </FormControl>
               <FormMessage className="text-xs" />
             </FormItem>

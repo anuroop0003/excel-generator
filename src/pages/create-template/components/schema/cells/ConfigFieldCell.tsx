@@ -29,7 +29,7 @@ export function ConfigFieldCell({
                 {...formField}
                 value={formField.value || ""}
                 placeholder={placeholder}
-                className="h-full w-full border-0 bg-transparent text-[11px] text-slate-800 focus-visible:ring-0 shadow-none placeholder:text-slate-300 rounded-none"
+                className="h-full w-full border-0 bg-transparent text-slate-800 focus-visible:ring-0 shadow-none placeholder:text-slate-300 rounded-none"
               />
             </FormControl>
           </FormItem>

@@ -9,7 +9,8 @@ interface FormulaCellProps {
 }
 
 export function FormulaCell({ index }: FormulaCellProps) {
-  const { control, setValue } = useFormContext<CreateTemplateFormValues>();
+  const { control, setValue, getValues } =
+    useFormContext<CreateTemplateFormValues>();
   const isFormula = useWatch({
     control,
     name: `columns.${index}.isFormula`,
@@ -25,6 +26,8 @@ export function FormulaCell({ index }: FormulaCellProps) {
             <FormControl>
               <FormulaInput
                 value={field.value || ""}
+                columnName={getValues(`columns.${index}.name`)}
+                allColumns={getValues("columns")}
                 onChange={(val: string) => {
                   field.onChange(val);
                   if (val && !isFormula) {

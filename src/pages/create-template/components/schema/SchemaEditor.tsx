@@ -1,11 +1,17 @@
 import { Button } from "@/components/ui/button";
 import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import {
   Table,
   TableBody,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { groqService } from "@/lib/groq.service";
 import type { CreateTemplateFormValues } from "@/validations/create-template.validation";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
@@ -21,7 +27,15 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { LayoutTemplate, Plus, RefreshCcw } from "lucide-react";
+import {
+  LayoutTemplate,
+  Loader2,
+  Plus,
+  RefreshCcw,
+  Sparkles,
+  Wand2,
+} from "lucide-react";
+import { useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { SchemaRow } from "./SchemaRow";
 
@@ -30,11 +44,15 @@ interface SchemaEditorProps {
 }
 
 export function SchemaEditor({ onUpdatePreview }: SchemaEditorProps) {
-  const { control } = useFormContext<CreateTemplateFormValues>();
+  const { control, reset, getValues } =
+    useFormContext<CreateTemplateFormValues>();
   const { fields, append, remove, move } = useFieldArray({
     control,
     name: "columns",
   });
+
+  const [aiPrompt, setAiPrompt] = useState<string>("");
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -59,6 +77,26 @@ export function SchemaEditor({ onUpdatePreview }: SchemaEditorProps) {
       name: `Field_${fields.length + 1}`,
       type: "String",
     });
+  };
+
+  const handleAiSchemaGenerate = async () => {
+    if (!aiPrompt.trim()) return;
+
+    try {
+      setIsGenerating(true);
+      const generatedColumns = await groqService.generateSchema(aiPrompt);
+      if (generatedColumns && generatedColumns.length > 0) {
+        reset({
+          ...getValues(),
+          columns: generatedColumns as any,
+        });
+        setAiPrompt("");
+      }
+    } catch (error) {
+      console.error("Schema generation failed:", error);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -90,6 +128,35 @@ export function SchemaEditor({ onUpdatePreview }: SchemaEditorProps) {
             Add Column
           </Button>
         </div>
+      </div>
+
+      {/* AI SCHEMA GENERATOR BAR - NEW INPUT GROUP STYLE */}
+      <div className="px-3 py-1.5 bg-purple-50 border-b border-purple-100 shadow-sm transition-all duration-300">
+        <InputGroup className="h-7 border-purple-200 focus-within:ring-2 focus-within:ring-purple-400 bg-white/50 shadow-none overflow-hidden group">
+          <InputGroupAddon className="pl-2 pr-0">
+            <Sparkles className="size-3.5 text-purple-600 shrink-0 animate-pulse" />
+          </InputGroupAddon>
+          <InputGroupInput
+            value={aiPrompt}
+            onChange={(e) => setAiPrompt(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleAiSchemaGenerate()}
+            placeholder="Describe your table (e.g. 'Project Tracker with Owner and Deadline')..."
+            className="placeholder:text-purple-300 italic flex-1"
+          />
+          <Button
+            size="sm"
+            disabled={isGenerating || !aiPrompt.trim()}
+            onClick={handleAiSchemaGenerate}
+            className="h-full px-3 rounded-none bg-purple-600 hover:bg-purple-700 text-white text-[11px] font-medium gap-1.5 transition-colors cursor-pointer border-l border-purple-200"
+          >
+            {isGenerating ? (
+              <Loader2 className="size-3 animate-spin" />
+            ) : (
+              <Wand2 className="size-3" />
+            )}
+            {isGenerating ? "Creating..." : "Magic Create"}
+          </Button>
+        </InputGroup>
       </div>
 
       <div className="flex-1 overflow-auto bg-white">

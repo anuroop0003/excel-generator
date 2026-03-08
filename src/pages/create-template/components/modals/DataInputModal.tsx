@@ -11,34 +11,34 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { parseRawDataInput } from "@/lib/data-parser";
-import { FileSpreadsheet, Play, Upload } from "lucide-react";
+import { groqService } from "@/lib/groq.service";
+import { FileSpreadsheet, Loader2, Play, Sparkles, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import * as XLSX from "xlsx";
+import type { ExcelColumn } from "../../types";
 
 interface DataInputModalProps {
+  columns: ExcelColumn[];
   onRunOutput: (data: any[]) => void;
 }
 
-export function DataInputModal({ onRunOutput }: DataInputModalProps) {
-  const [inputText, setInputText] = useState("");
+export function DataInputModal({ columns, onRunOutput }: DataInputModalProps) {
+  const [inputText, setInputText] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleRun = () => {
     try {
       setError(null);
-      // If we have text input, use that. Otherwise if we have file, it's already processed or we need to inform user.
-      // But typically user expects text or file.
       if (inputText.trim()) {
         const parsedData = parseRawDataInput(inputText);
         onRunOutput(parsedData);
         setOpen(false);
         reset();
       } else if (uploadedFileName) {
-        // If file was already parsed into text, we just run it.
-        // In my implementation below, I'll put parsed data into the text area.
         setError("Please ensure data is loaded in the input box above.");
       } else {
         setError("Please provide some data (JSON, CSV or Excel).");
@@ -47,6 +47,25 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
       setError(
         "Failed to parse data. Please ensure it is valid JSON or CSV format.",
       );
+    }
+  };
+
+  const handleAiGenerate = async () => {
+    if (columns.length === 0) {
+      setError("Please define some columns in the schema first.");
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      setError(null);
+      const data = await groqService.generateSampleData(columns, 10);
+      setInputText(JSON.stringify(data, null, 2));
+      setUploadedFileName(null);
+    } catch (err: any) {
+      setError(err.message || "Failed to generate AI data.");
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -98,8 +117,8 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
             <Upload className="size-5" /> Load Test Data
           </DialogTitle>
           <DialogDescription>
-            Paste your raw data in JSON sequence or basic CSV format, or upload
-            an Excel file.
+            Paste your raw data in JSON sequence or basic CSV format, upload an
+            Excel file, or generate with AI.
           </DialogDescription>
         </DialogHeader>
 
@@ -109,6 +128,23 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
               Input Data
             </span>
             <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={isGenerating}
+                onClick={handleAiGenerate}
+                className="h-7 text-[11px] bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 hover:border-purple-300 px-2 flex items-center transition-all cursor-pointer shadow-sm animate-in fade-in zoom-in duration-300"
+              >
+                {isGenerating ? (
+                  <Loader2 className="size-3.5 animate-spin" />
+                ) : (
+                  <Sparkles className="size-3.5 fill-purple-700/20" />
+                )}
+                {isGenerating ? "Generating..." : "Generate with AI"}
+              </Button>
+
+              <div className="w-px h-3 bg-slate-300 mx-1"></div>
+
               <input
                 type="file"
                 ref={fileInputRef}
@@ -157,6 +193,7 @@ export function DataInputModal({ onRunOutput }: DataInputModalProps) {
           </DialogClose>
           <Button
             onClick={handleRun}
+            disabled={isGenerating}
             className="bg-[#107C41] hover:bg-[#0c6132] text-white cursor-pointer"
           >
             <Play className="size-4" /> Run Output

@@ -47,7 +47,7 @@ export function DataPreview({
           {onLoadData && (
             <>
               <div className="w-px h-3 bg-slate-300"></div>
-              <DataInputModal onRunOutput={onLoadData} />
+              <DataInputModal columns={columns} onRunOutput={onLoadData} />
               <div className="w-px h-3 bg-slate-300"></div>
               <ExportModal
                 data={sampleData}

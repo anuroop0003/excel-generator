@@ -49,7 +49,7 @@ export function TopHeader({ onPublish }: TopHeaderProps) {
                 <FormControl>
                   <Input
                     {...field}
-                    className="h-7 w-full bg-white border-slate-300 text-[13px] font-medium px-2 py-0 placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-green-600 focus-visible:ring-offset-0 transition-all shadow-sm"
+                    className="h-7 w-full bg-white border-slate-300 font-medium px-2 py-0 placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-green-600 focus-visible:ring-offset-0 transition-all shadow-sm"
                     placeholder="Template Name..."
                   />
                 </FormControl>
