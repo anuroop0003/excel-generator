@@ -44,7 +44,7 @@ export function TopHeader({
             placeholder="Template Name..."
           />
         </div>
-        <div className="h-4 w-[1px] bg-slate-300"></div>
+        <div className="h-4 w-px bg-slate-300"></div>
         <Button
           size="sm"
           onClick={onPublish}

@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage";
-import SignInPage from "../pages/auth/SignInPage";
-import SignUpPage from "../pages/auth/SignUpPage";
+import ForgotPasswordPage from "../pages/auth/forgot-password/ForgotPasswordPage";
+import SignInPage from "../pages/auth/sign-in/SignInPage";
+import SignUpPage from "../pages/auth/sign-up/SignUpPage";
 import { CreateTemplatePage } from "../pages/create-template";
-import ListingPage from "../pages/listing";
+import ListingPage from "../pages/listing/ListingPage";
 
 export const routes = createBrowserRouter([
   {
