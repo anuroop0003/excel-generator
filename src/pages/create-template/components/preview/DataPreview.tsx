@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/table";
 import { getColumnLetter } from "@/lib/utils";
 import { Database, LayoutTemplate } from "lucide-react";
-import type { ExcelColumn } from "../types";
-import { DataInputModal } from "./DataInputModal";
+import type { ExcelColumn } from "../../types";
+import { TypeIcon } from "../common/TypeIcon";
+import { DataInputModal } from "../modals/DataInputModal";
+import { ExportModal } from "../modals/ExportModal";
 import { DataPreviewRow } from "./DataPreviewRow";
-import { ExportModal } from "./ExportModal";
-import { TypeIcon } from "./TypeIcon";
 
 interface DataPreviewProps {
   columns: ExcelColumn[];

@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { TableCell } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import type { ExcelColumn, Option } from "../../types";
+import type { ExcelColumn, Option } from "../../../types";
 
 interface EnumOptionsCellProps {
   id: string;

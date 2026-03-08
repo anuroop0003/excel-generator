@@ -9,7 +9,7 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { evaluateFormula } from "@/lib/formula-parser";
 import { cn } from "@/lib/utils";
-import type { ExcelColumn } from "../types";
+import type { ExcelColumn } from "../../types";
 
 interface DataPreviewRowProps {
   row: any;

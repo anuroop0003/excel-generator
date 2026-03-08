@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { TableCell } from "@/components/ui/table";
-import type { ExcelColumn } from "../../types";
+import type { ExcelColumn } from "../../../types";
 
 interface ConfigFieldCellProps {
   id: string;

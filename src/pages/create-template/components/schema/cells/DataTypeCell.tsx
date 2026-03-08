@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import { TableCell } from "@/components/ui/table";
 import { Calendar, Hash, List, ToggleLeft, Type } from "lucide-react";
-import type { ColumnType, ExcelColumn } from "../../types";
+import type { ColumnType, ExcelColumn } from "../../../types";
 
 interface DataTypeCellProps {
   id: string;

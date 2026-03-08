@@ -2,14 +2,14 @@ import { TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { ExcelColumn } from "../types";
-import { ActionsCell } from "./schema-row/ActionsCell";
-import { ConfigFieldCell } from "./schema-row/ConfigFieldCell";
-import { DataTypeCell } from "./schema-row/DataTypeCell";
-import { DragHandleCell } from "./schema-row/DragHandleCell";
-import { EnumOptionsCell } from "./schema-row/EnumOptionsCell";
-import { FieldNameCell } from "./schema-row/FieldNameCell";
-import { FormulaCell } from "./schema-row/FormulaCell";
+import type { ExcelColumn } from "../../types";
+import { ActionsCell } from "./cells/ActionsCell";
+import { ConfigFieldCell } from "./cells/ConfigFieldCell";
+import { DataTypeCell } from "./cells/DataTypeCell";
+import { DragHandleCell } from "./cells/DragHandleCell";
+import { EnumOptionsCell } from "./cells/EnumOptionsCell";
+import { FieldNameCell } from "./cells/FieldNameCell";
+import { FormulaCell } from "./cells/FormulaCell";
 
 interface SchemaRowProps {
   col: ExcelColumn;

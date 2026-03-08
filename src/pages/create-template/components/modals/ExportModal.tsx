@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Download, FileDown, FileJson } from "lucide-react";
 import * as XLSX from "xlsx";
-import type { ExcelColumn } from "../types";
+import type { ExcelColumn } from "../../types";
 
 interface ExportModalProps {
   data: any[];

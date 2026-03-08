@@ -7,10 +7,9 @@ import { getTemplateById, saveTemplate } from "@/lib/templates-store";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { DataPreview } from "./components/DataPreview";
-import { SchemaEditor } from "./components/SchemaEditor";
-import { TopHeader } from "./components/TopHeader";
+import { TopHeader } from "./components/header/TopHeader";
+import { DataPreview } from "./components/preview/DataPreview";
+import { SchemaEditor } from "./components/schema/SchemaEditor";
 import type { ExcelColumn } from "./types";
 
 const DEFAULT_COLUMNS: ExcelColumn[] = [

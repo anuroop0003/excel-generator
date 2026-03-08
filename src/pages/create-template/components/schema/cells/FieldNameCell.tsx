@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { TableCell } from "@/components/ui/table";
 import { getColumnLetter } from "@/lib/utils";
-import type { ExcelColumn } from "../../types";
+import type { ExcelColumn } from "../../../types";
 
 interface FieldNameCellProps {
   id: string;

@@ -1,5 +1,5 @@
 import { Calendar, Hash, List, ToggleLeft, Type } from "lucide-react";
-import type { ColumnType } from "../types";
+import type { ColumnType } from "../../types";
 
 export const TypeIcon = ({
   type,

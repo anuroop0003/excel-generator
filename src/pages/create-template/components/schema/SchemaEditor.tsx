@@ -21,7 +21,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { LayoutTemplate, Plus, RefreshCcw } from "lucide-react";
-import type { ExcelColumn } from "../types";
+import type { ExcelColumn } from "../../types";
 import { SchemaRow } from "./SchemaRow";
 
 interface SchemaEditorProps {
