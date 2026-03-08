@@ -1,56 +1,46 @@
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TableCell } from "@/components/ui/table";
-import { useEffect, useState } from "react";
-import type { ExcelColumn, Option } from "../../../types";
+import type { CreateTemplateFormValues } from "@/validations/create-template.validation";
+import { useFormContext } from "react-hook-form";
 
 interface EnumOptionsCellProps {
-  id: string;
-  options: Option[] | undefined;
-  onUpdate: <K extends keyof ExcelColumn>(
-    id: string,
-    field: K,
-    value: ExcelColumn[K],
-  ) => void;
+  index: number;
 }
 
-export function EnumOptionsCell({
-  id,
-  options = [],
-  onUpdate,
-}: EnumOptionsCellProps) {
-  const [inputValue, setInputValue] = useState("");
-
-  // Update local state when options prop changes (e.g. initial load or external update)
-  useEffect(() => {
-    const valueString = options.map((opt) => opt.label).join(", ");
-    setInputValue(valueString);
-  }, [options]);
-
-  const handleBlur = () => {
-    const newOptions: Option[] = inputValue
-      .split(",")
-      .map((item) => item.trim())
-      .filter((item) => item !== "")
-      .map((item) => ({ value: item, label: item }));
-    onUpdate(id, "options", newOptions);
-  };
+export function EnumOptionsCell({ index }: EnumOptionsCellProps) {
+  const { control } = useFormContext<CreateTemplateFormValues>();
 
   return (
     <TableCell
       colSpan={3}
-      className="relative py-0 align-middle border-r border-slate-200 bg-slate-50/30 focus-within:z-20 focus-within:outline-2 focus-within:outline-[#107C41] focus-within:-outline-offset-2"
+      className="relative py-0 align-middle border-r border-slate-200 bg-white focus-within:z-20 focus-within:outline-2 focus-within:outline-[#107C41] focus-within:-outline-offset-2"
     >
-      <Input
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onBlur={handleBlur}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            (e.target as HTMLInputElement).blur();
-          }
-        }}
-        placeholder="Comma separated options (Item1, Item2)"
-        className="h-full w-full font-mono text-[11px] border-0 bg-transparent focus:bg-white focus-visible:ring-0 shadow-none placeholder:text-slate-300 text-slate-800 rounded-none"
+      <FormField
+        control={control}
+        name={`columns.${index}.options`}
+        render={({ field }) => (
+          <FormItem className="space-y-0">
+            <FormControl>
+              <Input
+                value={(field.value || [])
+                  .map((opt: any) => opt.label)
+                  .join(", ")}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  const options = val
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                    .map((s) => ({ value: s, label: s }));
+                  field.onChange(options);
+                }}
+                className="h-full w-full border-0 bg-transparent text-[11px] text-slate-800 focus-visible:ring-0 shadow-none placeholder:text-slate-300 rounded-none italic"
+                placeholder="Option A, Option B..."
+              />
+            </FormControl>
+          </FormItem>
+        )}
       />
     </TableCell>
   );

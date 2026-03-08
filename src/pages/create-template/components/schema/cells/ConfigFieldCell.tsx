@@ -1,33 +1,39 @@
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TableCell } from "@/components/ui/table";
-import type { ExcelColumn } from "../../../types";
+import type { CreateTemplateFormValues } from "@/validations/create-template.validation";
+import { useFormContext } from "react-hook-form";
 
 interface ConfigFieldCellProps {
-  id: string;
+  index: number;
   field: "formatting" | "validation";
-  value: string | undefined;
   placeholder: string;
-  onUpdate: <K extends keyof ExcelColumn>(
-    id: string,
-    field: K,
-    value: ExcelColumn[K],
-  ) => void;
 }
 
 export function ConfigFieldCell({
-  id,
+  index,
   field,
-  value,
   placeholder,
-  onUpdate,
 }: ConfigFieldCellProps) {
+  const { control } = useFormContext<CreateTemplateFormValues>();
+
   return (
     <TableCell className="relative py-0 align-middle border-r border-slate-200 bg-white focus-within:z-20 focus-within:outline-2 focus-within:outline-[#107C41] focus-within:-outline-offset-2">
-      <Input
-        value={value || ""}
-        onChange={(e) => onUpdate(id, field, e.target.value)}
-        placeholder={placeholder}
-        className="h-full w-full border-0 bg-transparent text-[11px] text-slate-800 focus-visible:ring-0 shadow-none placeholder:text-slate-300 rounded-none"
+      <FormField
+        control={control}
+        name={`columns.${index}.${field}`}
+        render={({ field: formField }) => (
+          <FormItem className="space-y-0">
+            <FormControl>
+              <Input
+                {...formField}
+                value={formField.value || ""}
+                placeholder={placeholder}
+                className="h-full w-full border-0 bg-transparent text-[11px] text-slate-800 focus-visible:ring-0 shadow-none placeholder:text-slate-300 rounded-none"
+              />
+            </FormControl>
+          </FormItem>
+        )}
       />
     </TableCell>
   );

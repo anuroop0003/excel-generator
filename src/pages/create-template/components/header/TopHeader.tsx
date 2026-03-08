@@ -1,19 +1,23 @@
 import { Button } from "@/components/ui/button";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import type { CreateTemplateFormValues } from "@/validations/create-template.validation";
 import { ArrowLeft, FileSpreadsheet, Save } from "lucide-react";
+import { useFormContext } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 interface TopHeaderProps {
-  templateName: string;
-  setTemplateName: (name: string) => void;
   onPublish?: () => void;
 }
 
-export function TopHeader({
-  templateName,
-  setTemplateName,
-  onPublish,
-}: TopHeaderProps) {
+export function TopHeader({ onPublish }: TopHeaderProps) {
+  const { control } = useFormContext<CreateTemplateFormValues>();
+
   return (
     <header className="flex h-12 shrink-0 items-center justify-between border-b border-slate-300 bg-slate-50 px-4 z-10 w-full shadow-sm">
       <div className="flex items-center gap-4">
@@ -37,11 +41,21 @@ export function TopHeader({
 
       <div className="flex items-center gap-3 w-full max-w-sm justify-end">
         <div className="relative group flex-1 max-w-[200px]">
-          <Input
-            value={templateName}
-            onChange={(e) => setTemplateName(e.target.value)}
-            className="h-7 w-full bg-white border-slate-300 text-[13px] font-medium px-2 py-0 placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-green-600 focus-visible:ring-offset-0 transition-all shadow-sm"
-            placeholder="Template Name..."
+          <FormField
+            control={control}
+            name="templateName"
+            render={({ field }) => (
+              <FormItem className="space-y-0">
+                <FormControl>
+                  <Input
+                    {...field}
+                    className="h-7 w-full bg-white border-slate-300 text-[13px] font-medium px-2 py-0 placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-green-600 focus-visible:ring-offset-0 transition-all shadow-sm"
+                    placeholder="Template Name..."
+                  />
+                </FormControl>
+                <FormMessage className="text-[10px] absolute -bottom-4 right-0" />
+              </FormItem>
+            )}
           />
         </div>
         <div className="h-4 w-px bg-slate-300"></div>

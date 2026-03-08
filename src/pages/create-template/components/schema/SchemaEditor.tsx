@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { CreateTemplateFormValues } from "@/validations/create-template.validation";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
   closestCenter,
@@ -21,30 +22,20 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { LayoutTemplate, Plus, RefreshCcw } from "lucide-react";
-import type { ExcelColumn } from "../../types";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { SchemaRow } from "./SchemaRow";
 
 interface SchemaEditorProps {
-  columns: ExcelColumn[];
-  handleAddColumn: () => void;
-  handleRemoveColumn: (id: string) => void;
-  handleReorderColumn: (activeId: string, overId: string) => void;
-  handleUpdateColumn: <K extends keyof ExcelColumn>(
-    id: string,
-    field: K,
-    value: ExcelColumn[K],
-  ) => void;
   onUpdatePreview: () => void;
 }
 
-export function SchemaEditor({
-  columns,
-  handleAddColumn,
-  handleRemoveColumn,
-  handleReorderColumn,
-  handleUpdateColumn,
-  onUpdatePreview,
-}: SchemaEditorProps) {
+export function SchemaEditor({ onUpdatePreview }: SchemaEditorProps) {
+  const { control } = useFormContext<CreateTemplateFormValues>();
+  const { fields, append, remove, move } = useFieldArray({
+    control,
+    name: "columns",
+  });
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -56,9 +47,19 @@ export function SchemaEditor({
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      handleReorderColumn(active.id.toString(), over.id.toString());
+      const oldIndex = fields.findIndex((f) => f.id === active.id);
+      const newIndex = fields.findIndex((f) => f.id === over.id);
+      move(oldIndex, newIndex);
     }
   }
+
+  const handleAddColumn = () => {
+    append({
+      id: crypto.randomUUID(),
+      name: `Field_${fields.length + 1}`,
+      type: "String",
+    });
+  };
 
   return (
     <>
@@ -92,7 +93,7 @@ export function SchemaEditor({
       </div>
 
       <div className="flex-1 overflow-auto bg-white">
-        {columns.length === 0 ? (
+        {fields.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <span className="text-xs text-slate-400">No fields defined.</span>
           </div>
@@ -126,16 +127,14 @@ export function SchemaEditor({
               </TableHeader>
               <TableBody>
                 <SortableContext
-                  items={columns.map((c) => c.id)}
+                  items={fields.map((f) => f.id)}
                   strategy={verticalListSortingStrategy}
                 >
-                  {columns.map((col, index) => (
+                  {fields.map((field, index) => (
                     <SchemaRow
-                      key={col.id}
-                      col={col}
+                      key={field.id}
                       index={index}
-                      handleRemoveColumn={handleRemoveColumn}
-                      handleUpdateColumn={handleUpdateColumn}
+                      onRemove={() => remove(index)}
                     />
                   ))}
                 </SortableContext>

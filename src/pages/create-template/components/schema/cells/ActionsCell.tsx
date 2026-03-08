@@ -14,12 +14,11 @@ import { TableCell } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
 
 interface ActionsCellProps {
-  id: string;
   name: string;
-  onRemove: (id: string) => void;
+  onRemove: () => void;
 }
 
-export function ActionsCell({ id, name, onRemove }: ActionsCellProps) {
+export function ActionsCell({ name, onRemove }: ActionsCellProps) {
   return (
     <TableCell className="py-0 align-middle text-center w-8">
       <AlertDialog>
@@ -45,7 +44,7 @@ export function ActionsCell({ id, name, onRemove }: ActionsCellProps) {
             </AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
-              onClick={() => onRemove(id)}
+              onClick={onRemove}
               className="cursor-pointer"
             >
               Delete
